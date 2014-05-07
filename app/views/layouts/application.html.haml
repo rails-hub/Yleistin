@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+      %title= content_for?(:title) ? yield(:title) : "yleistin"
+      / for Google
+      %meta{:name => 'description', :content => 'Yleistin: Test your general knowledge'}
+      %meta{:name => 'og:image',  :content => 'http://carrot.is/img/fb-share.jpg'}
+      %meta{content: "561967870564815", property: "fb:app_id"}/
+      %meta{:content => content_for?(:description) ? yield(:description) : "yleistin", :name => "description"}
+        = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
+        = javascript_include_tag "application", "data-turbolinks-track" => false
+        = csrf_meta_tags
+        = yield(:head)
+  #wrapper
+  #container
+    %nav{role: "navigation"}
+      = render "layouts/navbar"
+    //nav
+    - flash.each do |name, msg|
+      - if msg.is_a?(String)
+        %div{:class => "alert alert-dismissable alert-#{name == :notice ? "success" : "error"}"}
+          %a.close{"data-dismiss" => "alert"} ×
+          = content_tag :div, msg, :id => "flash_#{name}"
+    %section#section1.section{"data-section" => "1"}
+      .container-fluid
+        .row-fluid
+          = yield
+        / /row-fluid
+      / /container-fluid
+    / /section
